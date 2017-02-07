@@ -27,6 +27,7 @@
     file:
       name: "{{ s3_ssl_certs_tmpdir }}/{{ s3_ssl_certs_certbundle }}"
       state: absent
+    changed_when: false
 
   - name: check if yml has good common name
     fail:
