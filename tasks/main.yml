@@ -1,2 +1,16 @@
 ---
+  - name: install prerequisites
+    apt: name=python-boto state=latest update_cache=true cache_valid_time=3600
 
+  - name: acquire certificate from s3
+    become: false
+    connection: local
+    s3:
+      region: "{{ s3_ssl_certs_region }}"
+      bucket: "{{ s3_ssl_certs_bucket }}"
+      aws_access_key: "{{ s3_ssl_certs_accesskey }}"
+      aws_secret_key: "{{ s3_ssl_certs_secretkey }}"
+      object: "{{ s3_ssl_certs_container }}"
+      dest: "{{ s3_ssl_certs_tmpdir }}/{{ s3_ssl_certs_container }}"
+      mode: "get"
+      overwrite: yes
