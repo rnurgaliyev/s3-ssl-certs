@@ -1,10 +1,10 @@
 # s3-ssl-certs
-Ansible role to fetch SSL certificates and corresponding private keys, which are stored in AWS S3 in single vault-encrypted YAML file, and deploy them on remote machines.
+Ansible role to fetch SSL certificates and corresponding private keys (certificate bundles), which are stored in AWS S3 in single vault-encrypted YAML file, and deploy them on remote machines.
 
 # Operation
-Your host machine has to have `python-boto` module installed, for Ansible S3 module to work correctly. 
+Your host machine must have `python-boto` module installed, for Ansible S3 module to work correctly.
 
-# S3 stored YAML file format
+# S3 stored YAML certificate bundle format
 ```yaml
 ---
 
