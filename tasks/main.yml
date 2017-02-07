@@ -37,3 +37,37 @@
     fail:
       msg: "Private key is not defined in {{ s3_ssl_certs_container }}"
     when: certificate.private_key is not defined
+
+  - name: install certificate
+    copy:
+      content: "{{ certificate.certificate }}"
+      dest: "{{ s3_ssl_certs_outputdir }}/{{ certificate.cn }}.crt"
+      owner: "{{ s3_ssl_certs_owner }}"
+      group: "{{ s3_ssl_certs_group }}"
+      mode: "0644"
+
+  - name: install private key
+    copy:
+      content: "{{ certificate.private_key }}"
+      dest: "{{ s3_ssl_certs_outputdir }}/{{ certificate.cn }}.key"
+      owner: "{{ s3_ssl_certs_owner }}"
+      group: "{{ s3_ssl_certs_group }}"
+      mode: "0600"
+
+  - name: install chain
+    copy:
+      content: "{{ certificate.chain }}"
+      dest: "{{ s3_ssl_certs_outputdir }}/{{ certificate.cn }}.chain"
+      owner: "{{ s3_ssl_certs_owner }}"
+      group: "{{ s3_ssl_certs_group }}"
+      mode: "0644"
+    when: certificate.chain is defined
+
+  - name: install full chain
+    copy:
+      content: "{{ certificate.full_chain }}"
+      dest: "{{ s3_ssl_certs_outputdir }}/{{ certificate.cn }}.full_chain"
+      owner: "{{ s3_ssl_certs_owner }}"
+      group: "{{ s3_ssl_certs_group }}"
+      mode: "0644"
+    when: certificate.full_chain is defined

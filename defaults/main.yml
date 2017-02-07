@@ -8,3 +8,6 @@ s3_ssl_certs_container: ''
 
 s3_ssl_certs_tmpdir: '/tmp'
 s3_ssl_certs_outputdir: '/etc/ssl'
+
+s3_ssl_certs_owner: 'root'
+s3_ssl_certs_group: 'root'
