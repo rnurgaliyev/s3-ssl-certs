@@ -5,7 +5,7 @@ Ansible role to fetch SSL certificates and corresponding private keys, which are
 Your host machine has to have `python-boto` module installed, for Ansible S3 module to work correctly. 
 
 # S3 stored YAML file format
-```
+```yaml
 ---
 
 cn: <common name>
