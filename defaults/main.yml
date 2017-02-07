@@ -10,7 +10,7 @@
 #
 
 # S3 bucket name
-# This is bucket where the vault-encrypted .yml files with certificates are stored.
+# This is bucket where the vault-encrypted .yml files with certificate bundles are stored.
 s3_ssl_certs_bucket: ''
 
 # S3 region
@@ -20,8 +20,8 @@ s3_ssl_certs_region: ''
 s3_ssl_certs_accesskey: ''
 s3_ssl_certs_secretkey: ''
 
-# Object (.yml file) where certificate data is stored. See README.md for the format.
-s3_ssl_certs_ymlcertfile: ''
+# Object (.yml file) where certificate bundle is stored. See README.md for the format.
+s3_ssl_certs_certbundle: ''
 
 #
 # LOCAL configuration

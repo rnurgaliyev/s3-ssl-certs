@@ -1,6 +1,6 @@
 ---
 
-  - name: acquire certificate from s3
+  - name: acquire certificate bundle from s3
     become: false
     connection: local
     s3:
@@ -8,8 +8,8 @@
       bucket: "{{ s3_ssl_certs_bucket }}"
       aws_access_key: "{{ s3_ssl_certs_accesskey }}"
       aws_secret_key: "{{ s3_ssl_certs_secretkey }}"
-      object: "{{ s3_ssl_certs_ymlcertfile }}"
-      dest: "{{ s3_ssl_certs_tmpdir }}/{{ s3_ssl_certs_ymlcertfile }}"
+      object: "{{ s3_ssl_certs_certbundle }}"
+      dest: "{{ s3_ssl_certs_tmpdir }}/{{ s3_ssl_certs_certbundle }}"
       mode: "get"
       overwrite: yes
     changed_when: false
@@ -18,22 +18,22 @@
     become: false
     connection: local
     include_vars:
-      file: "{{ s3_ssl_certs_tmpdir }}/{{ s3_ssl_certs_ymlcertfile }}"
+      file: "{{ s3_ssl_certs_tmpdir }}/{{ s3_ssl_certs_certbundle }}"
       name: certificate
 
   - name: check if yml has good common name
     fail:
-      msg: "CN is not defined in {{ s3_ssl_certs_ymlcertfile }}"
+      msg: "CN is not defined in {{ s3_ssl_certs_certbundle }}"
     when: certificate.cn is not defined
 
   - name: check if yml has certificate
     fail:
-      msg: "Certificate is not defined in {{ s3_ssl_certs_ymlcertfile }}"
+      msg: "Certificate is not defined in {{ s3_ssl_certs_certbundle }}"
     when: certificate.certificate is not defined
 
   - name: check if yml has private key
     fail:
-      msg: "Private key is not defined in {{ s3_ssl_certs_ymlcertfile }}"
+      msg: "Private key is not defined in {{ s3_ssl_certs_certbundle }}"
     when: certificate.private_key is not defined
 
   - name: install certificate
