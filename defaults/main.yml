@@ -5,4 +5,6 @@ s3_ssl_certs_region: ''
 s3_ssl_certs_accesskey: ''
 s3_ssl_certs_secretkey: ''
 s3_ssl_certs_container: ''
-s3_ssl_certs_tmpdir: ''
+
+s3_ssl_certs_tmpdir: '/tmp'
+s3_ssl_certs_outputdir: '/etc/ssl'
