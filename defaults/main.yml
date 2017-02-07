@@ -1,13 +1,47 @@
 ---
+#
+# Default values for the role.
+#
+# You probably want to redefine all of these values.
+#
 
+#
+# AWS S3 configuration
+#
+
+# S3 bucket name
+# This is bucket where the vault-encrypted .yml containers are stored.
 s3_ssl_certs_bucket: ''
+
+# S3 region
 s3_ssl_certs_region: ''
+
+# S3 access credentials
 s3_ssl_certs_accesskey: ''
 s3_ssl_certs_secretkey: ''
+
+# Object (.yml file) where certificate data is stored. See README.md for the format.
 s3_ssl_certs_container: ''
 
+#
+# LOCAL configuration
+#
+
+# Temporary directory to store acquired from S3 data on LOCAL host
 s3_ssl_certs_tmpdir: '/tmp'
+
+#
+# REMOTE configuration
+#
+
+# Directory for output files on remote host. Following files are created:
+# <Common Name>.crt - X.509 certificate, always created
+# <Common Name>.key - private key, always created
+# <Common Name>.chain - created if <chain> variable exists in input YAML
+# <Common Name>.full_chain - created if <full_chain> variable exists in input YAML
 s3_ssl_certs_outputdir: '/etc/ssl'
 
+# Owner of output files on remote host. All files will be set to 0644 mode,
+# except private key which will be set to 0600 mode.
 s3_ssl_certs_owner: 'root'
 s3_ssl_certs_group: 'root'
