@@ -21,15 +21,15 @@
       file: "{{ s3_ssl_certs_tmpdir }}/{{ s3_ssl_certs_certbundle }}"
       name: certificate
 
-  - name: remove certficate data from local machine
-    become: false
-    connection: local
-    file:
-      name: "{{ s3_ssl_certs_tmpdir }}/{{ s3_ssl_certs_certbundle }}"
-      state: absent
-    changed_when: false
-    failed_when: false
-    # Do not fail because we could already remove that certificate from local host
+  # - name: remove certficate data from local machine
+  #   become: false
+  #   connection: local
+  #   file:
+  #     name: "{{ s3_ssl_certs_tmpdir }}/{{ s3_ssl_certs_certbundle }}"
+  #     state: absent
+  #   changed_when: false
+  #   failed_when: false
+  #   # Do not fail because we could already remove that certificate from local host
 
   - name: check if yml has good common name
     fail:
