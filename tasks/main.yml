@@ -17,7 +17,9 @@
   - name: load certificate data
     become: false
     connection: local
-    include_vars: "{{ s3_ssl_certs_tmpdir }}/{{ s3_ssl_certs_certbundle }}"
+    include_vars: 
+      file: "{{ s3_ssl_certs_tmpdir }}/{{ s3_ssl_certs_certbundle }}"
+      name: s3_ssl_certs_certdata
 
   - name: remove certficate data from local machine
     become: false
@@ -32,48 +34,57 @@
   - name: check if yml has good common name
     fail:
       msg: "CN is not defined in {{ s3_ssl_certs_certbundle }}"
-    when: cn is not defined
+    when: s3_ssl_certs_certdata.cn is not defined
 
   - name: check if yml has certificate
     fail:
       msg: "Certificate is not defined in {{ s3_ssl_certs_certbundle }}"
-    when: certificate is not defined
+    when: s3_ssl_certs_certdata.certificate is not defined
 
   - name: check if yml has private key
     fail:
       msg: "Private key is not defined in {{ s3_ssl_certs_certbundle }}"
-    when: private_key is not defined
+    when: s3_ssl_certs_certdata.private_key is not defined
+
+  - name: execute pre-install tasks
+    command: "{{ s3_ssl_certs_pre_exec }}"
+    when: s3_ssl_certs_pre_exec is defined
 
   - name: install certificate
     copy:
-      content: "{{ certificate }}"
-      dest: "{{ s3_ssl_certs_outputdir }}/{{ cn }}.crt"
+      content: "{{ s3_ssl_certs_certdata.certificate }}"
+      dest: "{{ s3_ssl_certs_outputdir }}/{{ s3_ssl_certs_certdata.cn }}.crt"
       owner: "{{ s3_ssl_certs_owner }}"
       group: "{{ s3_ssl_certs_group }}"
       mode: "0644"
+    register: s3_ssl_certs_result
 
   - name: install private key
     copy:
-      content: "{{ private_key }}"
-      dest: "{{ s3_ssl_certs_outputdir }}/{{ cn }}.key"
+      content: "{{ s3_ssl_certs_certdata.private_key }}"
+      dest: "{{ s3_ssl_certs_outputdir }}/{{ s3_ssl_certs_certdata.cn }}.key"
       owner: "{{ s3_ssl_certs_owner }}"
       group: "{{ s3_ssl_certs_group }}"
       mode: "0600"
 
   - name: install chain
     copy:
-      content: "{{ chain }}"
-      dest: "{{ s3_ssl_certs_outputdir }}/{{ cn }}.chain"
+      content: "{{ s3_ssl_certs_certdata.chain }}"
+      dest: "{{ s3_ssl_certs_outputdir }}/{{ s3_ssl_certs_certdata.cn }}.chain"
       owner: "{{ s3_ssl_certs_owner }}"
       group: "{{ s3_ssl_certs_group }}"
       mode: "0644"
-    when: chain is defined
+    when: s3_ssl_certs_certdata.chain is defined
 
   - name: install full chain
     copy:
-      content: "{{ full_chain }}"
-      dest: "{{ s3_ssl_certs_outputdir }}/{{ cn }}.full_chain"
+      content: "{{ s3_ssl_certs_certdata.full_chain }}"
+      dest: "{{ s3_ssl_certs_outputdir }}/{{ s3_ssl_certs_certdata.cn }}.full_chain"
       owner: "{{ s3_ssl_certs_owner }}"
       group: "{{ s3_ssl_certs_group }}"
       mode: "0644"
-    when: full_chain is defined
+    when: s3_ssl_certs_certdata.full_chain is defined
+
+  - name: execute post-install tasks
+    command: "{{ s3_ssl_certs_post_exec }}"
+    when: s3_ssl_certs_post_exec is defined and s3_ssl_certs_result.changed
