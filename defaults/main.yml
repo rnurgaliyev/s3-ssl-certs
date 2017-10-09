@@ -45,3 +45,7 @@ s3_ssl_certs_outputdir: '/etc/ssl'
 # except private key which will be set to 0600 mode.
 s3_ssl_certs_owner: 'root'
 s3_ssl_certs_group: 'root'
+
+# Commands to execute before and after certificate upload
+#s3_ssl_certs_pre_exec: ''
+#s3_ssl_certs_post_exec: 'systemctl restart nginx.service'
