@@ -1,0 +1,5 @@
+---
+
+- name: execute post-install tasks
+  command: "{{ s3_ssl_certs_post_exec }}"
+  when: s3_ssl_certs_post_exec is defined
