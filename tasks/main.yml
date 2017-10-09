@@ -57,7 +57,7 @@
       owner: "{{ s3_ssl_certs_owner }}"
       group: "{{ s3_ssl_certs_group }}"
       mode: "0644"
-    register: s3_ssl_certs_result
+    notify: execute post-install tasks
 
   - name: install private key
     copy:
@@ -84,7 +84,3 @@
       group: "{{ s3_ssl_certs_group }}"
       mode: "0644"
     when: s3_ssl_certs_certdata.full_chain is defined
-
-  - name: execute post-install tasks
-    command: "{{ s3_ssl_certs_post_exec }}"
-    when: s3_ssl_certs_post_exec is defined and s3_ssl_certs_result.changed
