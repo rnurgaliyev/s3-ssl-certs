@@ -3,21 +3,22 @@
   - name: acquire certificate bundle from s3
     become: false
     connection: local
-    s3:
-      region: "{{ s3_ssl_certs_region }}"
-      bucket: "{{ s3_ssl_certs_bucket }}"
-      aws_access_key: "{{ s3_ssl_certs_accesskey }}"
-      aws_secret_key: "{{ s3_ssl_certs_secretkey }}"
-      object: "{{ s3_ssl_certs_certbundle }}"
-      dest: "{{ s3_ssl_certs_tmpdir }}/{{ s3_ssl_certs_certbundle }}"
-      mode: "get"
-      overwrite: yes
+    action: >
+      {{'s3' if ansible_version.full is version_compare('2.4', '<') else 'aws_s3' }}
+      region='{{ s3_ssl_certs_region }}'
+      bucket='{{ s3_ssl_certs_bucket }}'
+      aws_access_key='{{ s3_ssl_certs_accesskey }}'
+      aws_secret_key='{{ s3_ssl_certs_secretkey }}'
+      object='{{ s3_ssl_certs_certbundle }}'
+      dest='{{ s3_ssl_certs_tmpdir }}/{{ s3_ssl_certs_certbundle }}'
+      mode='get'
+      overwrite=yes
     changed_when: false
 
   - name: load certificate data
     become: false
     connection: local
-    include_vars: 
+    include_vars:
       file: "{{ s3_ssl_certs_tmpdir }}/{{ s3_ssl_certs_certbundle }}"
       name: s3_ssl_certs_certdata
 
